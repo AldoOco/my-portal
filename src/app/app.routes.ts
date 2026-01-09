@@ -5,7 +5,7 @@ import { AssistComponent } from './pages/assist/assist.component';
 //Llamado de las rutas
 export const routes: Routes = [
     {path:'', component: HomeComponent },
-    {path:'productos', component: ProductsComponent },
-    {path:'asistencia', component: AssistComponent },
+    {path:'products', component: ProductsComponent },
+    {path:'assist', component: AssistComponent },
     {path:'**', redirectTo: '' }
 ];
