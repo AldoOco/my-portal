@@ -1,0 +1,41 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #151b1b;
+  background:
+    radial-gradient(
+      circle at 10% 35%,
+      /* rgba(184, 241, 223, 0.65), */
+       rgba(147, 190, 245, 0.55),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 95% 30%,
+      /* rgba(216, 209, 250, 0.6), */
+       rgba(216, 209, 250, 0.6),
+      transparent 45%
+    ),
+    #eef2ed;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.app-shell.page-dark {
+  color: #edf4f1;
+  background:
+   #090d12;
+}
+
+app-header {
+  display: block;
+  padding: 24px 16px 0;
+}
+
+.content {
+  flex: 1;
+  padding: 40px 16px;
+}
+.selection {
+  margin-top: 40px;
+  text-align: center;
+}

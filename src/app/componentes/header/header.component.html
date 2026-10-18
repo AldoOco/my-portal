@@ -1,8 +1,72 @@
-<header>
+<!-- <header>
     <nav>
 
         <a routerLink="/">Inicio</a>
         <a routerLink="/products">Productos</a>
         <a routerLink="/assist">Asistencia</a>
     </nav>
+</header> -->
+<header>
+    <div class="dock-wrapper" [class.dark]="darkMode">
+  <nav class="dock" aria-label="Navegación principal">
+    <div class="nav-track" (keydown)="onKeydown($event)">
+      <div
+        class="dock-glow"
+        aria-hidden="true"
+        [style.left.%]="(activeIndex + 0.5) * 25"
+      ></div>
+
+      <div
+        class="active-bead"
+        aria-hidden="true"
+        [style.transform]="'translateX(' + activeIndex * 100 + '%)'"
+      ></div>
+
+      <button
+        *ngFor="let item of items; let i = index"
+        type="button"
+        class="nav-item"
+        [class.active]="activeSection === item.id"
+        [attr.aria-label]="item.label"
+        [attr.aria-pressed]="activeSection === item.id"
+        (click)="select(i)"
+      >
+        <svg
+          class="nav-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path [attr.d]="item.path"></path>
+        </svg>
+
+        <span class="nav-label">{{ item.label }}</span>
+      </button>
+    </div>
+
+    <button
+      type="button"
+      class="mode-toggle"
+      [attr.aria-label]="
+        darkMode ? 'Activar tema claro' : 'Activar tema oscuro'
+      "
+      [attr.aria-pressed]="darkMode"
+      (click)="toggleTheme()"
+    >
+      <span aria-hidden="true">{{ darkMode ? '☾' : '☼' }}</span>
+    </button>
+  </nav>
+
+  <div class="hint">
+    <span>Navega</span>
+    <kbd>←</kbd>
+    <kbd>→</kbd>
+    <span class="hint-separator" aria-hidden="true">•</span>
+    <span>o selecciona una sección</span>
+  </div>
+</div>
 </header>
