@@ -10,7 +10,22 @@ describe('HeaderComponent', () => {
   const getButtons = (): HTMLButtonElement[] =>
     Array.from(element.querySelectorAll<HTMLButtonElement>('.nav-item'));
 
+  // const pressKey = (target: HTMLElement, key: string): KeyboardEvent => {
+  //   const event = new KeyboardEvent('keydown', {
+  //     key,
+  //     bubbles: true,
+  //     cancelable: true
+  //   });
+
+  //   target.dispatchEvent(event);
+  //   fixture.detectChanges();
+
+  //   return event;
+  // };
+
   const pressKey = (target: HTMLElement, key: string): KeyboardEvent => {
+    target.focus();
+
     const event = new KeyboardEvent('keydown', {
       key,
       bubbles: true,
@@ -193,4 +208,21 @@ describe('HeaderComponent', () => {
       element.querySelector('.dock-wrapper')!.classList.contains('dark')
     ).toBe(false);
   });
+
+  it('debe responder a las flechas sin que el foco esté en la barra', () => {
+    (document.activeElement as HTMLElement | null)?.blur();
+
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      bubbles: true,
+      cancelable: true
+    });
+
+    document.body.dispatchEvent(event);
+    fixture.detectChanges();
+
+    expect(component.activeSection).toBe(component.items[1].id);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
 });

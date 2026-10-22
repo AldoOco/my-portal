@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ElementRef, HostListener, inject} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 export type DockSection = 'inicio' | 'products' | 'assist' | 'connect';
@@ -12,6 +12,8 @@ export type DockSection = 'inicio' | 'products' | 'assist' | 'connect';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
   @Input() activeSection: DockSection = 'inicio';
   @Input() darkMode = false;
 
@@ -62,8 +64,18 @@ export class HeaderComponent {
     this.sectionChange.emit(this.activeSection);
   }
 
+  @HostListener('document:keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+      return;
+    }
+
+    const target = event.target;
+
+    if (
+      target instanceof Element &&
+      target.closest('input, textarea, select, [contenteditable="true"]')
+    ) {
       return;
     }
 
@@ -72,18 +84,28 @@ export class HeaderComponent {
     const direction = event.key === 'ArrowRight' ? 1 : -1;
     const nextIndex =
       (this.activeIndex + direction + this.items.length) % this.items.length;
+    const focusInside = this.host.nativeElement.contains(
+      document.activeElement
+    );
 
     this.select(nextIndex);
 
     // Mantiene el foco en la opción seleccionada.
-    const container = event.currentTarget as HTMLElement;
-    container
-      .querySelectorAll<HTMLButtonElement>('.nav-item')
-      [nextIndex]?.focus();
+    // const container = event.currentTarget as HTMLElement;
+    // container
+    //   .querySelectorAll<HTMLButtonElement>('.nav-item')
+    //   [nextIndex]?.focus();
+
+    if (focusInside) {
+      this.host.nativeElement
+        .querySelectorAll<HTMLButtonElement>('.nav-item')
+        [nextIndex]?.focus();
+    }
   }
 
   toggleTheme(): void {
     this.darkMode = !this.darkMode;
     this.darkModeChange.emit(this.darkMode);
   }
+
 }
