@@ -66,10 +66,10 @@ describe('AppComponent', () => {
     getButtons()[target].click();
     fixture.detectChanges();
 
-    expect(component.currentSection).toBe('assits');
+    expect(component.currentSection).toBe('assist');
     expect(
       element.querySelector('.selection')?.textContent
-    ).toContain('Sección seleccionada: assits');
+    ).toContain('Sección seleccionada: assist');
   });
 
   it('debe transmitir al header los cambios de sección del padre', () => {
@@ -79,7 +79,7 @@ describe('AppComponent', () => {
     const header = getHeader();
     const target = header.items.findIndex(item => item.id === 'assist');
 
-    expect(header.activeSection).toBe('assits');
+    expect(header.activeSection).toBe('assist');
     expect(getButtons()[target].classList.contains('active')).toBe(true);
   });
 
@@ -94,7 +94,7 @@ describe('AppComponent', () => {
     expect(getHeader().darkMode).toBe(true);
 
     expect(
-      element.querySelector('main')!.classList.contains('page-dark')
+      element.querySelector('.app-shell')!.classList.contains('page-dark')
     ).toBe(true);
 
     expect(
@@ -128,26 +128,35 @@ describe('AppComponent', () => {
   });
 
   it('debe navegar a la ruta de la opción seleccionada', async () => {
-  const router = TestBed.inject(Router);
-  const header = getHeader();
-  const target = header.items.findIndex(item => item.id === 'products');
+    const router = TestBed.inject(Router);
+    const header = getHeader();
+    const target = header.items.findIndex(item => item.id === 'products');
 
-  getButtons()[target].click();
-  await fixture.whenStable();
-  fixture.detectChanges();
+    getButtons()[target].click();
+    await fixture.whenStable();
+    fixture.detectChanges();
 
-  expect(router.url).toBe('/products');
-  expect(
-    fixture.debugElement.query(By.directive(ProductsComponent))
-  ).toBeTruthy();
-});
+    expect(router.url).toBe('/products');
+    expect(
+      fixture.debugElement.query(By.directive(ProductsComponent))
+    ).toBeTruthy();
+  });
 
-it('debe marcar la opción activa cuando cambia la URL', async () => {
-  const router = TestBed.inject(Router);
+  it('debe marcar la opción activa cuando cambia la URL', async () => {
+    const router = TestBed.inject(Router);
 
-  await router.navigateByUrl('/assits');
-  fixture.detectChanges();
+    await router.navigateByUrl('/assist');
+    fixture.detectChanges();
 
-  expect(component.currentSection).toBe('assits');
-});
+    expect(component.currentSection).toBe('assist');
+  });
+
+  it('debe navegar a /login al pulsar Login', async () => {
+    const router = TestBed.inject(Router);
+
+    element.querySelector<HTMLButtonElement>('.login-btn')!.click();
+    await fixture.whenStable();
+
+    expect(router.url).toBe('/login');
+  });
 });

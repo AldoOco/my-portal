@@ -1,0 +1,150 @@
+<div class="scene" #scene>
+  <main class="stage">
+    <div
+      class="robot"
+      #robot
+      [attr.data-mood]="mood"
+      [class.is-turned]="turned"
+      [class.is-pressed]="pressed"
+      [class.is-hyped]="hyped"
+      [class.is-spinning]="spinning"
+    >
+      <div class="bubble" #bubble role="status" aria-live="polite">
+        <span>{{ bubbleText }}</span>
+      </div>
+
+      <div class="antenna" aria-hidden="true">
+        <span class="antenna-rod"></span>
+        <span class="antenna-tip"></span>
+      </div>
+
+      <div
+        class="head3d"
+        aria-hidden="true"
+        [style.--rx]="rx + 'deg'"
+        [style.--ry]="ry + 'deg'"
+      >
+        <div class="head">
+          <span class="ear ear--l"></span>
+          <span class="ear ear--r"></span>
+
+          <div class="face face--front">
+            <div class="visor">
+              <div
+                class="eyes"
+                [class.blink]="blinking"
+                [style.--lx]="lx + 'px'"
+                [style.--ly]="ly + 'px'"
+              >
+                <span class="eye eye--l"></span>
+                <span class="eye eye--r"></span>
+              </div>
+              <span class="cheek cheek--l"></span>
+              <span class="cheek cheek--r"></span>
+              <span class="mouth"></span>
+            </div>
+          </div>
+
+          <div class="face face--back">
+            <div class="panel">
+              <span class="panel-lights"><i></i><i></i><i></i></span>
+              <div class="meter" [attr.data-lvl]="meterLevel">
+                <i [class.on]="meterLevel > 0"></i>
+                <i [class.on]="meterLevel > 1"></i>
+                <i [class.on]="meterLevel > 2"></i>
+                <i [class.on]="meterLevel > 3"></i>
+              </div>
+              <p class="panel-label">{{ panelLabel }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="card" #card novalidate (submit)="onSubmit($event)">
+      <span class="hand hand--l" aria-hidden="true"></span>
+      <span class="hand hand--r" aria-hidden="true"></span>
+
+      <h1 class="title">Beep boop. Quien vive?</h1>
+
+      <label class="field">
+        <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12Zm0 2c-3.9 0-8 2-8 5v1.5h16V19c0-3-4.1-5-8-5Z" />
+        </svg>
+        <input
+          #nameInput
+          type="text"
+          placeholder="Nombre"
+          autocomplete="name"
+          aria-label="Your name"
+          (focus)="onNameFocus()"
+          (input)="onNameInput()"
+        />
+      </label>
+
+      <label class="field">
+        <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm8 7.3L4.4 7h15.2L12 12.3ZM4 9.2V17h16V9.2l-8 5.3-8-5.3Z" />
+        </svg>
+        <input
+          #emailInput
+          type="email"
+          placeholder="Correo"
+          autocomplete="email"
+          aria-label="Your email"
+          (focus)="onEmailFocus()"
+          (input)="onEmailInput()"
+        />
+      </label>
+
+      <label class="field">
+        <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 8V7a3 3 0 0 1 6 0v3H9Zm3 4a2 2 0 0 1 1 3.7V19h-2v-1.3a2 2 0 0 1 1-3.7Z" />
+        </svg>
+        <input
+          #passInput
+          [type]="passVisible ? 'text' : 'password'"
+          placeholder="Contraseña"
+          autocomplete="new-password"
+          aria-label="Password"
+          (focus)="onPassFocus()"
+          (blur)="onPassBlur($event)"
+          (input)="onPassInput()"
+        />
+        <button
+          #peekBtn
+          class="peek"
+          type="button"
+          [attr.aria-label]="passVisible ? 'Hide password' : 'Show password'"
+          [attr.aria-pressed]="passVisible"
+          (click)="togglePass()"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5c-5 0-9.3 3.1-11 7.5C2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5Zm0 12.5a5 5 0 1 1 5-5 5 5 0 0 1-5 5Zm0-8a3 3 0 1 0 3 3 3 3 0 0 0-3-3Z" />
+          </svg>
+        </button>
+      </label>
+
+      <button
+        #loginBtn
+        class="btn"
+        type="submit"
+        [class.is-success]="success"
+        (mouseenter)="hype(true)"
+        (mouseleave)="hype(false)"
+        (focus)="hype(true)"
+        (blur)="hype(false)"
+        (pointerdown)="onPress()"
+        (pointerup)="releasePress()"
+        (pointercancel)="releasePress()"
+        (pointerleave)="onPointerLeave()"
+      >
+        <span class="btn-bolt" aria-hidden="true">⚡</span>
+        <span class="btn-label">{{ btnLabel }}</span>
+      </button>
+
+      <span class="foot foot--l" aria-hidden="true"></span>
+      <span class="foot foot--r" aria-hidden="true"></span>
+    </form>
+  </main>
+</div>

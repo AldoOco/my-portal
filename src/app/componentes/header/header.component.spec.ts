@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideRouter } from '@angular/router';
 import { HeaderComponent, DockSection } from './header.component';
 
 describe('HeaderComponent', () => {
@@ -40,7 +40,8 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent]
+      imports: [HeaderComponent],
+      providers: [provideRouter([])]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
@@ -223,6 +224,12 @@ describe('HeaderComponent', () => {
 
     expect(component.activeSection).toBe(component.items[1].id);
     expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('debe enlazar el botón Login con /login', () => {
+    const link = element.querySelector<HTMLAnchorElement>('a.login-btn')!;
+
+    expect(link.getAttribute('href')).toBe('/login');
   });
 
 });

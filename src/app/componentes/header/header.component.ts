@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, ElementRef, HostListener, inject} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 export type DockSection = 'inicio' | 'products' | 'assist' | 'connect';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -19,6 +19,7 @@ export class HeaderComponent {
 
   @Output() sectionChange = new EventEmitter<DockSection>();
   @Output() darkModeChange = new EventEmitter<boolean>();
+  @Output() loginClick = new EventEmitter<void>();
 
   readonly items: {
     id: DockSection;

@@ -19,7 +19,7 @@
     0 24px 60px rgba(47, 61, 57, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.82);
 
-  width: min(720px, 100%);
+  width: min(800px, 100%);
   margin-inline: auto;
   font-family: "DM Sans", system-ui, sans-serif;
 }
@@ -217,5 +217,44 @@ kbd {
   .dock-glow,
   .nav-item {
     transition: none;
+  }
+}
+
+.login-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  margin-left: 7px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+  text-decoration: none;
+}
+
+.login-btn:hover {
+  background: rgba(79, 142, 220, 0.14);
+  transform: translateY(-1px);
+}
+
+.login-btn:focus-visible {
+  outline: 2px solid #2f6fbf;
+  outline-offset: 3px;
+}
+
+.dark .login-btn:focus-visible {
+  outline-color: #8ab8f5;
+}
+
+@media (max-width: 430px) {
+  .login-label {
+    display: none;
   }
 }

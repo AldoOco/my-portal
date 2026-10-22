@@ -1,8 +1,9 @@
 <div class="app-shell" [class.page-dark]="darkMode">
-  <app-header
+  <!-- <app-header
     [activeSection]="currentSection"
     (sectionChange)="onSectionChange($event)"
     [(darkMode)]="darkMode"
+    
   ></app-header>
 
   <main class="content">
@@ -12,5 +13,25 @@
     <router-outlet></router-outlet>
   </main>
 
-  <app-footer></app-footer>
+  <app-footer></app-footer> -->
+   @if (!isLoginPage) {
+    <app-header
+      [activeSection]="currentSection"
+      (sectionChange)="onSectionChange($event)"
+      [(darkMode)]="darkMode"
+    ></app-header>
+  }
+
+  <main class="content" [class.content--full]="isLoginPage">
+    @if (!isLoginPage) {
+      <p class="selection">
+        Sección seleccionada: {{ currentSection }}
+      </p>
+    }
+    <router-outlet></router-outlet>
+  </main>
+
+  @if (!isLoginPage) {
+    <app-footer></app-footer>
+  }
 </div>

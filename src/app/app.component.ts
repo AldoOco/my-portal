@@ -27,6 +27,7 @@ export class AppComponent {
 
   currentSection: DockSection = 'inicio';
   darkMode = false;
+  isLoginPage = false;
 
   constructor() {
     this.router.events
@@ -37,9 +38,15 @@ export class AppComponent {
       .subscribe(event => {
         const url = (event as NavigationEnd).urlAfterRedirects;
         const segment = url.split(/[?#]/)[0].split('/')[1] || 'inicio';
+        this.isLoginPage = segment === 'login';
         const match = this.validSections.find(s => s === segment);
 
-        this.currentSection = match ?? 'inicio';
+        //this.currentSection = match ?? 'inicio';
+        if (match) {
+          this.currentSection = match;
+        } else if (segment !== 'login') {
+          this.currentSection = 'inicio';
+        }
       });
   }
 
@@ -47,4 +54,5 @@ export class AppComponent {
     this.currentSection = section;
     this.router.navigateByUrl(section === 'inicio' ? '/' : `/${section}`);
   }
+
 }
